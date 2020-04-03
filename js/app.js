@@ -14,16 +14,6 @@
  */
 
 /**
- * Define Global Variables
- *
- */
-
-const navMenu = document.getElementById('navbar__list')
-//  const navMenu = document.getElementsByClassName('navbar__menu')
-const sectionElement = document.querySelectorAll('[data-nav]')
-const mainPage = document.getElementsByName('main')
-
-/**
  * End Global Variables
  * Start Helper Functions
  *
@@ -56,12 +46,17 @@ const InViewport = (elem) => {
 // build the nav
 
 const CreateLink = () => {
+  const navMenu = document.getElementById('navbar__list')
+  //  const navMenu = document.getElementsByClassName('navbar__menu')
+  const sectionElement = document.querySelectorAll('[data-nav]')
   const home = document.createElement('li')
+
   home.innerHTML = '<a class="menu__link" href="#">Home</a>'
   navMenu.appendChild(home)
-  for (const navCount in sectionElement) {
-    const navName = sectionElement[navCount].getAttribute('data-nav')
-    const navLink = sectionElement[navCount].getAttribute('id')
+
+  for (const elem of sectionElement) {
+    const navName = elem.getAttribute('data-nav')
+    const navLink = elem.getAttribute('id')
     const link = document.createElement('li')
     link.innerHTML = `<a class="menu__link" href="#${navLink}">${navName}</a>`
     navMenu.appendChild(link)
@@ -71,17 +66,17 @@ const CreateLink = () => {
 // Add class 'active' to section when near top of viewport
 
 const ActiveScroll = () => {
+  const sectionElement = document.querySelectorAll('[data-nav]')
 
-  console.log('online')
-  window.onscroll(function () {
-    for (const navCount in sectionElement) {
-      if (InViewport(sectionElement[navCount])) {
-        sectionElement[navCount].classList.add('active-section')
+  window.onscroll = function () {
+    for (const elem of sectionElement) {
+      if (InViewport(elem)) {
+        elem.classList.add('active-section')
       } else {
-        sectionElement[navCount].classList.remove('active-section')
+        elem.classList.remove('active-section')
       }
     }
-  })
+  }
 }
 
 // Scroll to anchor ID using scrollTO event
@@ -105,4 +100,3 @@ CreateLink()
 // Set sections as active
 
 ActiveScroll()
-console.log(ActiveScroll)
