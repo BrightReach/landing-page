@@ -9,6 +9,10 @@
 */
 
 /* ---- Base Rules ---- */
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     background: rgb(136, 203, 171);
     background: linear-gradient(
@@ -88,29 +92,11 @@ body {
     color: #fff;
     transition: ease 0.3s all;
   }
-  
-  .navbar__menu a.icon {
-    float: right;
-    display: block;
+
+  .navbar__menu .menu__link .active {
+      background-color: #4f6dff;
+      transition: ease 0.3s all;
   }
-  
-  .navbar__menu a:not(:first-child) {
-      display: none;
-    }
-  
-    .navbar__menu.mobile {
-      position: relative;
-    }
-    .navbar__menu.mobile .icon {
-      position: absolute;
-      right: 0;
-      top: 0;
-    }
-    .navbar__menu.mobile a {
-      float: none;
-      display: block;
-      text-align: left;
-    }
   
   @media screen and (min-width: 600px) {
   
