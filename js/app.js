@@ -46,31 +46,28 @@ const InViewport = (elem) => {
   )
 }
 
-const ActiveLink = () => {
+const ActiveLink = (index) => {
 
-const navLink = document.querySelectorAll('a.menu__link')
+  const navLink = document.querySelectorAll('a.menu__link:not(first-child)')
 
- for (const link of navLink) {
-
-  link += 1;
-  link.classList.add('active')
-  console.log(link)
-  return link
-
- }
-}
-
-const RemoveLink = () => {
-
-  const navLink = document.querySelectorAll('a.menu__link')
-  
-   for (let link of navLink) {
-  
-    link += 1;
-    link.classList.remove('active')
-    return link
+ for (let link of navLink) {
+     link.classList.add('active')
+     console.log(link.childNodes.keys());
+     
    }
   }
+
+const RemoveLink = (index) => {
+
+  const navLink = document.querySelectorAll('a.menu__link:not(first-child)')
+  
+   for (let link of navLink) {
+     for (const i of navLink.keys()) {
+       if (i == index) 
+        link.classList.remove('active')
+    }
+  }
+}
 
 
 /**
@@ -107,10 +104,10 @@ const ActiveScroll = () => {
 
       if (InViewport(elem)) {
         elem.classList.add('active-section')
-        ActiveLink();
+        ActiveLink(elem.childNodes.keys());
       } else {
         elem.classList.remove('active-section')
-        RemoveLink();
+        RemoveLink(elem);
       }
     }
 
@@ -146,4 +143,3 @@ CreateLink()
 // Set sections as active
 
 ActiveScroll()
-console.log(ActiveScroll)
