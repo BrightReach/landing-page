@@ -48,24 +48,28 @@ const InViewport = (elem) => {
 
 const ActiveLink = (index) => {
 
-  const navLink = document.querySelectorAll('a.menu__link:not(first-child)')
-
- for (let link of navLink) {
+  const navLink = document.querySelectorAll('[data-target]')
+  console.log(index)
+    for (const link of navLink) {
+      let lastID
+      if(index = link.getAttribute('data-target')){
      link.classList.add('active')
-     console.log(link.childNodes.keys());
-     
-   }
+     //lastID = index.getAttribute('data-target'))
+     //console.log(lastID)
+      } else if (index != lastID) {
+        lastID.classList.remove('active')
+      }
   }
+}
 
 const RemoveLink = (index) => {
 
-  const navLink = document.querySelectorAll('a.menu__link:not(first-child)')
-  
-   for (let link of navLink) {
-     for (const i of navLink.keys()) {
-       if (i == index) 
-        link.classList.remove('active')
-    }
+  const navLink = document.querySelectorAll('[data-target]')
+  console.log(navLink)
+    for (const link of navLink) {
+      if(index != link.getAttribute('data-target')){
+     link.classList.remove('active')
+      }
   }
 }
 
@@ -82,14 +86,14 @@ const CreateLink = () => {
   const navMenu = document.getElementById('navbar__list')
 
   const home = document.createElement('li')
-  home.innerHTML = '<a class="menu__link" href="#">Home</a>'
+  home.innerHTML = '<a class="menu__link">Home</a>'
   navMenu.appendChild(home)
 
  for (const elem of sectionElement) {
     const navName = elem.getAttribute('data-nav')
     const navLink = elem.getAttribute('id')
     const link = document.createElement('li')
-    link.innerHTML = `<a class="menu__link" href="#${navLink}">${navName}</a>`
+    link.innerHTML = `<a class="menu__link" data-target="${navLink}">${navName}</a>`
     navMenu.appendChild(link)
   }
 }
@@ -100,14 +104,17 @@ const ActiveScroll = () => {
 
   window.onscroll = function () {
    
+    //const navLink = document.querySelectorAll('[data-id]')
+    //console.log(navLink)
     for (const elem of sectionElement) {
+      
 
       if (InViewport(elem)) {
         elem.classList.add('active-section')
-        ActiveLink(elem.childNodes.keys());
+        ActiveLink(elem.getAttribute('id'));
       } else {
         elem.classList.remove('active-section')
-        RemoveLink(elem);
+        //RemoveLink(elem.getAttribute('id'));
       }
     }
 
