@@ -93,9 +93,9 @@ body {
     transition: ease 0.3s all;
   }
 
-  .navbar__menu .menu__link .active {
+  .navbar__menu .menu__link.active {
       background-color: #4f6dff;
-      transition: ease 0.3s all;
+      transition: ease 0.5s all;
   }
   
   @media screen and (min-width: 600px) {
