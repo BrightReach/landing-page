@@ -18,9 +18,10 @@
  *
  */
 
-//  const navMenu = document.getElementsByClassName('navbar__menu')
+
+// sectionElement is used as a global variable to create iterations
+
 const sectionElement = document.querySelectorAll('[data-nav]');
-const mainPage = document.getElementsByName('main');
 
 /**
  * End Global Variables
@@ -28,19 +29,63 @@ const mainPage = document.getElementsByName('main');
  *
  */
 
-const Scroll = (target) => {
-  for (const elem of sectionElement) {
-    if (target === elem.getAttribute('id')) {
-      console.log(target, elem.getAttribute('id'))
-      const direct = elem.getBoundingClientRect()
-      scrollTo(direct.x, direct.y)
-    } else {
-      return false
-    }
-  }
-};
+// Used to direct the user to the section that matches with the link
 
-const InViewport = (elem) => {
+const sectionDetect = (target) => {
+  for (const elem of sectionElement) {
+
+    /* If the function's parameter matches with the variable of the
+     * iterated section, then the co-ordinates of the section's
+     * bounding rectangle will be used to scroll towards section with
+     * the page offset to prevent inconsistencies. */
+
+    if (target === elem.getAttribute('id')) {
+      const direct = elem.getBoundingClientRect()
+      scrollTo(direct.x, direct.y + window.pageYOffset)
+    } 
+  }
+}
+
+// This is an event function used to scroll to the top of the page when clicked upon
+
+const topButtonClick = () => {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+
+// Whenever the 
+
+const topScrollButton = () => {
+
+  const button = document.getElementById('top_anchor');
+  console.log(document.body.scrollTop);
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    button.style.display = "block";
+  } else {
+    button.style.display = "none";
+  }
+}
+
+const navBarDisappear = () => {
+  
+  const navMenu = document.querySelector('.navbar__menu');
+  let vanish = () => setTimeout(() => navMenu.style.display = 'none', 5000);
+  let cease = clearTimeout(vanish);
+  let prevScrollPos = window.pageYOffset;
+
+  window.onscroll = () => {const currentScrollPos = window.pageYOffset;
+  
+    if (prevScrollPos > currentScrollPos) {
+      cease;
+      navMenu.style.display = 'block';
+    } else {
+      vanish();
+    }
+    prevScrollPos = currentScrollPos;}
+ 
+}
+
+const inViewPort = (elem) => {
   const bounding = elem.getBoundingClientRect();
 
   return (
@@ -53,7 +98,7 @@ const InViewport = (elem) => {
   );
 };
 
-const ActiveLink = (index) => {
+const activeLink = (index) => {
   const navLink = document.querySelectorAll('[data-target]');
   for (const link of navLink) {
     if (index === link.getAttribute('data-target')) {
@@ -72,11 +117,11 @@ const ActiveLink = (index) => {
 
 // build the nav
 
-const CreateLink = () => {
+const createLink = () => {
   const navMenu = document.getElementById('navbar__list');
 
   const home = document.createElement('li');
-  home.innerHTML = '<a class="menu__link">Home</a>';
+  home.innerHTML = '<a class="menu__link" href="#">Home</a>';
   navMenu.appendChild(home);
 
   for (const elem of sectionElement) {
@@ -90,12 +135,13 @@ const CreateLink = () => {
 
 // Add class 'active' to section when near top of viewport
 
-const ActiveScroll = () => {
+const activeScroll = () => {
   window.onscroll = function () {
+    topScrollButton();
     for (const elem of sectionElement) {
-      if (InViewport(elem)) {
+      if (inViewPort(elem)) {
         elem.classList.add('active-section');
-        ActiveLink(elem.getAttribute('id'));
+        activeLink(elem.getAttribute('id'));
       } else {
         elem.classList.remove('active-section');
       }
@@ -103,21 +149,20 @@ const ActiveScroll = () => {
   };
 };
 
-// Scroll to anchor ID using scrollTO event
+// sectionDetect to anchor ID using scrollTO event
 
-const ClickScroll = () => {
+const clickScroll = () => {
   const navMenu = document.getElementById('navbar__list')
-  navMenu.onclick = function (){
-    //let target = this.childNodes
+  let navLink = navMenu.childNodes
+  navLink.forEach(element => {
+    const link = element.childNodes[0]
+    link.onclick = function (e) {
+      console.log(e.target.getAttribute('data-target'))
+      sectionDetect(e.target.getAttribute('data-target'))
+    }  
+  })
+}
 
-    console.log(this.childNodes)
-    Scroll(this.getAttribute('data-target'))
-    /*for (const link of navLink) {
-      //Scroll(link.getAttribute('data-target'))
-      
-    }*/
-  }
-};
 
 /**
  * End Main Functions
@@ -127,12 +172,15 @@ const ClickScroll = () => {
 
 // Build menu
 
-CreateLink();
+createLink();
 
-// Scroll to section on link click
+// sectionDetect to section on link click
 
-ClickScroll();
+clickScroll();
 
 // Set sections as active
 
-ActiveScroll();
+activeScroll();
+
+navBarDisappear();
+

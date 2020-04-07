@@ -12,7 +12,7 @@
 </head>
 <body>
   <!-- HTML Follows BEM naming conventions 
-  IDs are only used for sections to connect menu achors to sections -->
+  IDs are only used for sections to connect menu anchors to sections -->
   <header class="page__header">
     <nav class="navbar__menu">
       <!-- Navigation starts as empty UL that will be populated with JS -->
@@ -27,6 +27,10 @@
     a data attribute that will populate the li node.
     Adding more sections will automatically populate nav.
     The first section is set to active class by default -->
+
+    <button id="top_anchor" onclick="topButtonClick()" title="Go to top"><i class="fas fa-angle-double-up"></i>
+    </button>
+
     <section id="section1" data-nav="Section 1" class="active-section">
       <div class="landing__container">
         <h2>Section 1</h2>
