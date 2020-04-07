@@ -106,7 +106,7 @@ body {
     }
   
   }
-
+  /* Top Anchor Button Styles */
   #top_anchor {
     display: none;
     position: fixed;
@@ -116,7 +116,7 @@ body {
     font-size: 30px;
     border: none;
     outline: none;
-    background-color: red;
+    background-color: #4f6dff;
     color: white;
     cursor: pointer;
     padding: 15px 25px;
@@ -124,7 +124,7 @@ body {
   }
   
   #top_anchor:hover {
-    background-color: #555;
+    background-color: #016;
     transition: ease 0.3s all;
   }
   
@@ -242,7 +242,7 @@ body {
   
   /* ---- Theme State Rules ---- */
   /* Section Active Styles */
-  /* Note: your-active-class class is applied through javascript. You should update the class here and in the index.html to what you set in your javascript file.  */
+
   section.active-section {
     background: rgb(0, 0, 0);
     background: linear-gradient(

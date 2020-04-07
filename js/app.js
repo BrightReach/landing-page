@@ -37,7 +37,8 @@ const sectionDetect = (target) => {
     /* If the function's parameter matches with the variable of the
      * iterated section, then the co-ordinates of the section's
      * bounding rectangle will be used to scroll towards section with
-     * the page offset to prevent inconsistencies. */
+     * the page offset to prevent inconsistencies.
+     */
 
     if (target === elem.getAttribute('id')) {
       const direct = elem.getBoundingClientRect()
@@ -46,19 +47,17 @@ const sectionDetect = (target) => {
   }
 }
 
-// This is an event function used to scroll to the top of the page when clicked upon
+// This is an event function used to scroll to the top of the page when clicked upon.
 
 const topButtonClick = () => {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
 }
 
-// Whenever the 
+// Whenever the user has scrolled from top, the Top button will appear.
 
 const topScrollButton = () => {
-
   const button = document.getElementById('top_anchor');
-  console.log(document.body.scrollTop);
   if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
     button.style.display = "block";
   } else {
@@ -66,24 +65,9 @@ const topScrollButton = () => {
   }
 }
 
-const navBarDisappear = () => {
-  
-  const navMenu = document.querySelector('.navbar__menu');
-  let vanish = () => setTimeout(() => navMenu.style.display = 'none', 5000);
-  let cease = clearTimeout(vanish);
-  let prevScrollPos = window.pageYOffset;
-
-  window.onscroll = () => {const currentScrollPos = window.pageYOffset;
-  
-    if (prevScrollPos > currentScrollPos) {
-      cease;
-      navMenu.style.display = 'block';
-    } else {
-      vanish();
-    }
-    prevScrollPos = currentScrollPos;}
- 
-}
+/* Detects each section that is within the viewport and returns the bounding
+ * rectangle with its variables as a boolean function
+ */
 
 const inViewPort = (elem) => {
   const bounding = elem.getBoundingClientRect();
@@ -98,9 +82,18 @@ const inViewPort = (elem) => {
   );
 };
 
+// Adds the "active" class into the Navigation bar's anchor based on section within the viewport
+ 
+
 const activeLink = (index) => {
   const navLink = document.querySelectorAll('[data-target]');
   for (const link of navLink) {
+
+    /* If the function's parameter matches with the target link of the iterated
+     * object, the "active" class will be added into the specified link.
+     * Otherwise, the "active" class of the that link will be removed.
+     */
+
     if (index === link.getAttribute('data-target')) {
       link.classList.add('active');
     } else {
@@ -115,25 +108,34 @@ const activeLink = (index) => {
  *
  */
 
-// build the nav
+// Builds the links within the navigation bar
 
 const createLink = () => {
   const navMenu = document.getElementById('navbar__list');
+   for (const elem of sectionElement) {
 
-  const home = document.createElement('li');
-  home.innerHTML = '<a class="menu__link" href="#">Home</a>';
-  navMenu.appendChild(home);
+  /* The title and ID of the sections are declared as variables to identify the links' titles and its data-targets
+   * while creating list-item elements as a declared variable
+  */
 
-  for (const elem of sectionElement) {
     const navName = elem.getAttribute('data-nav');
     const navLink = elem.getAttribute('id');
     const link = document.createElement('li');
+  
+    /* Adds the html within the list-item as an anchor before using the navLink as the data-target
+     * and appends the list-item as a child into the navigation menu.
+    */
+
     link.innerHTML = `<a class='menu__link' data-target="${navLink}">${navName}</a>`;
     navMenu.appendChild(link);
   }
 };
 
-// Add class 'active' to section when near top of viewport
+/* Adds the "active-section" class into the specified section whenever the
+ * it is in the user's viewport. This is also accompanied with the activeLink function
+ * for the specified anchor and the topScrollButton function that can detect whenever the
+ * Top Anchor button is in view.
+ */
 
 const activeScroll = () => {
   window.onscroll = function () {
@@ -149,20 +151,28 @@ const activeScroll = () => {
   };
 };
 
-// sectionDetect to anchor ID using scrollTO event
-
+// Whenever the user clicks on the specified link, it will scroll the user to the specified section.
+  
 const clickScroll = () => {
-  const navMenu = document.getElementById('navbar__list')
-  let navLink = navMenu.childNodes
+
+  // Declares a variable to create an array of the navigation menu from the created links
+  let navLink = document.getElementById('navbar__list').childNodes
+
+
   navLink.forEach(element => {
+    // Declares another variable to retrieve the anchors within the navigation bar
     const link = element.childNodes[0]
+
+    /* Whenever the user clicks on the specific link, the data-target of the specified link will be
+     * used as a parameter for the sectionDetect function to scroll the user's page to that specified 
+     * section.
+      */ 
+
     link.onclick = function (e) {
-      console.log(e.target.getAttribute('data-target'))
       sectionDetect(e.target.getAttribute('data-target'))
     }  
   })
 }
-
 
 /**
  * End Main Functions
@@ -170,17 +180,8 @@ const clickScroll = () => {
  *
  */
 
-// Build menu
-
 createLink();
-
-// sectionDetect to section on link click
-
 clickScroll();
-
-// Set sections as active
-
 activeScroll();
 
-navBarDisappear();
 
